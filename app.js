@@ -1,13 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mysql      = require('mysql');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const vehicleRouter  = require('./routes/vehicle');
 
-var app = express();
+const app = express();
+
+//For Cors
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,8 +26,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/vehicle/', vehicleRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,5 +44,23 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+const pool = mysql.createPool({
+  connectionLimit: 100,
+  host     : '94.73.170.201',
+  port     :  3306,
+  user     : 'EnesPlt',
+  password : 'EnsPlt190711',
+  database : 'EnsPlt'
+});
+
+pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+  if (error)
+    console.log("Database connection is not established");
+  else
+    console.log('The solution is: ', results[0].solution);
+});
+
 
 module.exports = app;
