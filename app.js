@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mysql      = require('mysql');
 
 //For routes
 const companyRouter = require('./routes/company');
@@ -32,7 +31,7 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -62,21 +61,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-const pool = mysql.createPool({
-  connectionLimit: 100,
-  host     : '94.73.170.201',
-  port     :  3306,
-  user     : 'EnesPlt',
-  password : 'EnsPlt190711',
-  database : 'EnsPlt'
-});
 
-pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-  if (error)
-    console.log("Database connection is not established");
-  else
-    console.log('The solution is: ', results[0].solution);
-});
 
 
 module.exports = app;
