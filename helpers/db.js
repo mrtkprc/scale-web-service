@@ -3,7 +3,6 @@ require('dotenv').config()
 
 let m_dbName;
 
-
 let pool;
 
 function setDatabaseName(dbName){
@@ -18,12 +17,14 @@ function setDatabaseName(dbName){
         });
 
         m_dbName = dbName;
+
         if (pool !== null)
         {
             resolve(pool);
         }
         else
         {
+            console.log("Error at setDatabaseName.");
             reject({status:false, error:"Pool is not created."});
         }
     });
@@ -32,10 +33,10 @@ function getDbName(){
     return m_dbName;
 }
 
-function execQuery(query)
+function execQuery(query, escapeCharacters = [])
 {
     return new Promise((resolve,reject) => {
-        pool.query(query, function (error, results, fields) {
+        pool.query(query, escapeCharacters, function (error, results, fields) {
             if(error === null)
             {
                 resolve({
@@ -54,10 +55,10 @@ function execQuery(query)
     });
 }
 
-function getData(query, dbName){
+function getData(query, dbName, escapeCharacters = []){
     return new Promise((resolve,reject) => {
         setDatabaseName(dbName).then((data) => {
-            execQuery(`${query}`)
+            execQuery(`${query}`, escapeCharacters)
                 .then(data => data.results)
                 .then((data) => {
                     resolve ({

@@ -5,7 +5,9 @@ const router = express.Router();
 /* GET All Locations. */
 router.get('/all', function(req, res, next) {
     const {dbName} = req.decode;
-    db.getData("SELECT * FROM lokasyon", dbName).then(data => res.json(data));
+    db.getData("SELECT * FROM lokasyon", dbName)
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
 });
 
 module.exports = router;
