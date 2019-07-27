@@ -11,6 +11,7 @@ const operatorRouter = require('./routes/operator');
 const productRouter = require('./routes/product');
 const scaleRouter = require('./routes/scale');
 const serialNumberRouter = require('./routes/serial_number');
+const user = require('./routes/user');
 const vehicleRouter  = require('./routes/vehicle');
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/operator/', verifyToken, operatorRouter);
 app.use('/api/product/', verifyToken, productRouter);
 app.use('/api/scale/', verifyToken, scaleRouter);
 app.use('/api/serial_number/', verifyToken, serialNumberRouter);
+app.use('/api/user/', verifyToken, user);
 app.use('/api/vehicle/', verifyToken, vehicleRouter);
 
 // catch 404 and forward to error handler
