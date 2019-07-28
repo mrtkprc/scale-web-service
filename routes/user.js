@@ -7,15 +7,13 @@ const router = express.Router();
 
 /* GET User Login Checking. */
 router.get('/checkLoginOperation', function(req, res, next) {
-    const {username, password} = req.decode;
+    const {email, password} = req.decode;
 
-    db.getData("SELECT id, db_name, username, password FROM login_informations WHERE username=? and password=?",
+    db.getData("SELECT id, db_name, email, password FROM login_informations WHERE email=? and password=?",
         process.env.USER_REGISTRY_DB_NAME,
-        [username, md5(password)])
+        [email, md5(password)])
             .then(data =>res.json(data))
             .catch((error) => res.json(error));
 });
-
-
 
 module.exports = router;
