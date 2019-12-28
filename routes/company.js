@@ -5,9 +5,9 @@ const router = express.Router();
 
 /* GET All companies.  */
 router.get('/all', function(req, res, next) {
-    const {dbName} = req.decode;
+    const {auth_key} = req.decode;
 
-    db.getData("SELECT * FROM firmakayit", dbName)
+    db.getData("SELECT * FROM firmakayit", auth_key)
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });

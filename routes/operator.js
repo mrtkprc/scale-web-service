@@ -4,8 +4,8 @@ const router = express.Router();
 
 /* GET All Operators. */
 router.get('/all', function(req, res, next) {
-    const {dbName} = req.decode;
-    db.getData("SELECT * FROM operatorkayit", dbName)
+    const {auth_key} = req.decode;
+    db.getData("SELECT * FROM operatorkayit", auth_key)
         .then(data => res.json(data))
         .catch(err => res.json(err));
 
